@@ -14,7 +14,7 @@ const getListOfEntries = logSources => {
     let entry = source.pop();
     while (entry !== false) {
         list.push(entry);
-        entry = source.pop()
+        entry = source.pop();
       }
     });
     return list;
@@ -31,6 +31,6 @@ const printLogs = (logSources, printer) => {
 
 
 module.exports = (logSources, printer) => {
-  printLogs(logSources, printer);
+  // printLogs(logSources, printer);
   return console.log("Sync sort complete.");
 };
