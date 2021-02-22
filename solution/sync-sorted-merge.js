@@ -31,6 +31,6 @@ const printLogs = (logSources, printer) => {
 
 
 module.exports = (logSources, printer) => {
-  // printLogs(logSources, printer);
+  printLogs(logSources, printer);
   return console.log("Sync sort complete.");
 };
