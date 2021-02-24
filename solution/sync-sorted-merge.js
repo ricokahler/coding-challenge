@@ -1,36 +1,25 @@
-"use strict";
-
-// Print all entries, across all of the sources, in chronological order.
-
-const sortedByDate = (entriesList) => {
-  let sortedEntryList = entriesList.sort((a,b) => a.date - b.date)
-  return sortedEntryList;
-}
-
-
-const getListOfEntries = logSources => {
-  const list = [];
-  logSources.map(source => {
-    let entry = source.pop();
-    while (entry !== false) {
-        list.push(entry);
-        entry = source.pop();
-      }
-    });
-    return list;
-}
-
-const printLogs = (logSources, printer) => {
-  let allEntries = getListOfEntries(logSources);
-  sortedByDate(allEntries);
-  allEntries.map(entry => {
-      return printer.print(entry);
-  });
-  return printer.done();
-}
-
+'use strict';
 
 module.exports = (logSources, printer) => {
-  printLogs(logSources, printer);
-  return console.log("Sync sort complete.");
+  // run this code until all logSources have been drained
+  while (logSources.every((logSource) => !logSource.drained)) {
+    // assign the first logSource as the first oldest
+    let oldest = logSources[0];
+
+    // iterate through every log source and check if the `last` value is older
+    // than our current oldest. if it is, then assign that as the oldest
+    for (const logSource of logSources) {
+      if (logSource.last.date.getTime() > oldest.last.date.getTime()) {
+        oldest = logSource;
+      }
+    }
+
+    // after that's all done, print the oldest
+    printer.print(oldest.last);
+
+    // move this logSource forward
+    oldest.pop();
+  }
+
+  printer.done();
 };
